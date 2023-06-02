@@ -1,0 +1,301 @@
+openapi: 3.0.X
+info:
+  title: API сервер для проекта «Guitar Shop — интернет-магазин по продаже гитар».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Guitar Shop — интернет-магазин по продаже гитар».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+tags:
+  - name: products
+    description: Действия с товарами.
+  - name: users
+    description: Действия с пользователем.
+
+paths:
+  /products/create:
+    post:
+      tags:
+        - products
+      summary: Создание нового товара #5.1.
+      description: Создание нового товара
+      parameters:
+       - name: X-Token
+         in: header
+         description: Только для администратора
+         example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+      requestBody:
+        description: Информация для создания нового товара.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
+        required: true
+      responses:
+        "201":
+          description: Товар успешно добавлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        "409":
+          description: Товар не добавлен
+  /products/{productId}:
+    patch:
+      tags:
+        - products
+      summary: Редактирование товара #5.2
+      description: Редактирование товара
+      parameters:
+       - name: X-Token
+         in: header
+         description: Только для администраторов
+         example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+       - name: productId
+         in: query
+         description: ИД товара
+      requestBody:
+        description: Информация, необходимая для редактирования товара
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/editProduct'
+        required: true
+      responses:
+        "201":
+          description: Информация о обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        "400":
+          description: Информация о товаре не обновлена
+
+    delete:
+      tags:
+        - products
+      summary: Удаление товара #5.3
+      description: Удаление товара
+      parameters:
+       - name: X-Token
+         in: header
+         description: Только для администраторов
+         example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+       - name: productId
+         in: query
+         description: ИД товара
+      responses:
+        "204":
+          description: Предложение удалено
+        "400":
+          description: Предложение не удалено
+    get:
+      tags:
+        - products
+      summary: Детальная информация по товару #5.5
+      description: Детальная информация по товару
+      parameters:
+       - name: productId
+         in: query
+         description: ИД товара
+      responses:
+        "201":
+          description: Детальная информация по товару
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+  /products:
+      get:
+        tags:
+          - products
+        summary: Список товаров #5.4
+        description: Список товаров
+        responses:
+          "200":
+            description: Список товаров
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/products'
+
+  /users/create:
+      post:
+        tags:
+          - users
+        summary: Создание нового пользователя #5.6
+        description: Создание нового пользователя
+        requestBody:
+          description: Информация для создания нового пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createUser'
+          required: true
+        responses:
+          "201":
+            description: Пользователь зарегистрирован. Объект пользователя.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/user'
+
+          "409":
+            description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя #5.7
+      description: Вход в закрытую часть приложения
+      responses:
+        "201":
+          description: Успешная авторизация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: Авторизация не пройдена
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя #5.8
+      description: Возвращает информацию по авторизованному пользователю
+      responses:
+        "200":
+          description: Успешная авторизация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "400":
+          description: Авторизация не пройдена
+  /users/logout:
+    delete:
+      tags:
+        - users
+      summary: Выход из закрытой части приложения 
+      description: Выход из закрытой части приложения (только если авторизация выполняется на основе сессий)
+      responses:
+        "204":
+          description: Сеанс завершен
+
+
+
+components:
+  schemas:
+    product:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Товар 1
+          minLength: 10
+          maxLength: 100
+        description:
+          type: string
+          example: Товар № 1
+          minLength: 20
+          maxLength: 1024
+        addDate:
+          type: string
+          example: 2017-07-21T17:32:28Z
+        photo:
+          type: string
+          example: product1.jpg
+        guitarType:
+          type: string
+          enum: [электро, аккустика, укулеле]
+          example: электро
+        article:
+          type: string
+          example: 3VRS14858383D
+        stringsCount:
+          type: integer
+          enum: [apartment, house, room, hotel]
+          example: apartment
+        price:
+          type: number
+          example: 500
+          minimum: 100
+          maximum: 100000
+      
+
+    products:
+      type: array
+      items:
+         type: object
+         properties:
+          title:
+            type: string
+            example: Товар 1
+            minLength: 10
+            maxLength: 100
+          description:
+            type: string
+            example: Товар № 1
+            minLength: 20
+            maxLength: 1024
+          addDate:
+            type: string
+            example: 2017-07-21T17:32:28Z
+          photo:
+            type: string
+            example: product1.jpg
+          guitarType:
+            type: string
+            enum: [электро, аккустика, укулеле]
+            example: электро
+          article:
+            type: string
+            example: 3VRS14858383D
+          stringsCount:
+            type: integer
+            enum: [apartment, house, room, hotel]
+            example: apartment
+          price:
+            type: number
+            example: 500
+            minimum: 100
+            maximum: 100000
+
+    editProduct:
+      type: object
+      properties:
+        productId:
+           type: string
+           example:  6329c3d6a04ab1061c6425ea
+        product:
+           $ref: '#/components/schemas/product'
+
+    createUser:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Ivan
+        email:
+          type: string
+          example: ivan@htmlacademy.ru
+        password:
+          type: string
+          example: 123456
+
+    user:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Ivan
+        email:
+          type: string
+          example: ivan@htmlacademy.ru
+        token:
+          type: string
+          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+

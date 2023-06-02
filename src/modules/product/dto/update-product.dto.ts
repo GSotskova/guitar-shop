@@ -15,7 +15,7 @@ export default class UpdateProductDto {
   public addDate!: Date;
 
   @IsOptional()
-  @MaxLength(256, {message: 'Too short for field «image»'})
+  @MaxLength(256, {message: 'Too short for field photo'})
   public photo?: string;
 
   @IsEnum(GuitarType, {message: `GuitarType must be one of электро, аккустика, укулеле`})

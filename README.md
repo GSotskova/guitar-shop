@@ -1,12 +1,12 @@
 # Guitar Shop — интернет-магазин по продаже гитар
 ## Запуск проекта
-
+npm start
 ## Сценарии
     ### cli
     npm run cli - запуск Cli
       npm run cli -- --help Команда выводит информацию о доступных командах
       npm run cli -- --generate 5 ./mocks/test.tsv http://localhost:3123/api  - Команда для генерации и заполнения БД тестовыми данными
-    ### mock
+    ### запуск JSON-сервера
     npm run mock:server
 
 ## Переменные окружения
