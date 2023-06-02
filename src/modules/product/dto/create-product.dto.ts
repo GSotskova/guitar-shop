@@ -1,32 +1,33 @@
-import {IsDateString, IsEnum, IsInt, Max, MaxLength, Min, MinLength, IsIn, IsString} from 'class-validator';
-import {STRINGS_COUNT} from '../product.constant.js';
+import {IsDateString, IsEnum, IsInt, Max, MaxLength, Min, MinLength, IsIn} from 'class-validator';
+import {ArticleValidate, DescriptValidate, PriceValidate, STRINGS_COUNT, STRINGS_VALID, TitleValidate} from '../product.constant.js';
 import { GuitarType } from '../../../types/guitar-type.enum.js';
 
 export default class CreateProductDto {
-  @MinLength(10, {message: 'Minimum title length must be 10'})
-  @MaxLength(100, {message: 'Maximum title length must be 100'})
+  @MinLength(TitleValidate.MinTitleLength, {message: 'Минимальная длина наименования 10 символов'})
+  @MaxLength(TitleValidate.MaxTitleLength, {message: 'Максимальная длина наименования 100 символов'})
   public title!: string;
 
-  @MinLength(20, {message: 'Minimum description length must be 20'})
-  @MaxLength(1024, {message: 'Maximum description length must be 1024'})
+  @MinLength(DescriptValidate.MinDescriptLength, {message: 'Минимальная длина описания товара 20 символов'})
+  @MaxLength(DescriptValidate.MaxDescriptLength, {message: 'Максимальная длина описания товара 1024 символа'})
   public description!: string;
 
-  @IsDateString({}, {message: 'postDate must be valid ISO date'})
+  @IsDateString({}, {message: 'Дата добавления товара. Должна быть действительная дата ISO'})
   public addDate!: Date;
 
-  @IsEnum(GuitarType, {message: `GuitarType must be one of электро, аккустика, укулеле`})
+  @IsEnum(GuitarType, {message: `Тип гитары. Один вариант из списка: электро, акустика, укулеле`})
   public guitarType!: GuitarType;
 
-  @IsString( {message: 'isFavorite must be true or false'})
+  @MinLength(ArticleValidate.MinArticleLength, {message: 'Минимальная длина артикула 5 символов'})
+  @MaxLength(ArticleValidate.MaxArticleLength, {message: 'Максимальная длина артикула 40 символов'})
   public article!: string;
 
 
-  @IsIn(STRINGS_COUNT)
+  @IsIn(STRINGS_COUNT, {message: `Количество струн. Один из вариантов: ${STRINGS_VALID}`})
   public stringsCount!: number;
 
-  @IsInt({message: 'Price must be an integer'})
-  @Min(100, {message: 'Minimum price is 100'})
-  @Max(100000, {message: 'Maximum price is 100000'})
+  @IsInt()
+  @Min(PriceValidate.MinPriceLength, {message: 'Минимальная цена 100'})
+  @Max(PriceValidate.MaxPriceLength, {message: 'Максимальная цена 100000'})
   public price!: number;
 
 }

@@ -17,9 +17,11 @@ import { DocumentExistsMiddleware } from '../../common/middlewares/document-exis
 import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
 
 import { ConfigInterface } from '../../common/config/config.interface.js';
-/*import {UploadFileMiddleware} from '../../common/middlewares/upload-file.middleware.js';
+import { AdminRouteMiddleware } from '../../common/middlewares/admin-route.middleware.js';
+import {UploadFileMiddleware} from '../../common/middlewares/upload-file.middleware.js';
 import UploadImageResponse from './response/upload-photo.response.js';
-*/
+import { ProductQuery } from './query/product.query.js';
+
 
 type ParamsGetProduct = {
   productId: string;
@@ -36,13 +38,13 @@ export default class ProductController extends Controller {
     super(logger, configService);
     this.logger.info('Register routes for ProductController...');
 
-   // this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({
       path: '/create',
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
-        new PrivateRouteMiddleware(),
+        new AdminRouteMiddleware(),
         new ValidateDtoMiddleware(CreateProductDto)
       ]
     });
@@ -58,40 +60,41 @@ export default class ProductController extends Controller {
     });
     
     this.addRoute({
-      path: '/:productId',
+      path: '/:productId/edit',
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
-        new PrivateRouteMiddleware(),
+        new AdminRouteMiddleware(),
         new ValidateObjectIdMiddleware('productId'),
         new ValidateDtoMiddleware(UpdateProductDto),
         new DocumentExistsMiddleware(this.productService, 'Product', 'productId'),
       ]
     });
     this.addRoute({
-      path: '/:productId',
+      path: '/:productId/delete',
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
-        new PrivateRouteMiddleware(),
+        new AdminRouteMiddleware(),
         new ValidateObjectIdMiddleware('productId'),
         new DocumentExistsMiddleware(this.productService, 'Product', 'productId'),
       ]
     });
-   /* this.addRoute({
-      path: '/:productId/previewimage',
+    this.addRoute({
+      path: '/:productId/photo',
       method: HttpMethod.Post,
-      handler: this.uploadPrevImage,
+      handler: this.uploadPhoto,
       middlewares: [
-        new PrivateRouteMiddleware(),
+        new AdminRouteMiddleware(),
         new ValidateObjectIdMiddleware('productId'),
-        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'prevImg'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'photo'),
       ]
-    });*/
+    });
   }
 
-  public async index(res: Response): Promise<void> {
-    const products = await this.productService.find();
+
+  public async index(_req: Request, res: Response, query: ProductQuery): Promise<void> {
+    const products = await this.productService.find(query);
     this.ok(res, fillDTO(ProductResponse, products));
   }
 
@@ -132,14 +135,11 @@ export default class ProductController extends Controller {
     this.noContent(res, product);
   }
 
-
-
-/*
-  public async uploadPrevImage(req: Request<core.ParamsDictionary | ParamsGetProduct>, res: Response) {
+public async uploadPhoto(req: Request<core.ParamsDictionary | ParamsGetProduct>, res: Response) {
     const {productId} = req.params;
     const updateDto = { photo: req.file?.filename };
     await this.productService.updateById(productId, updateDto);
     this.created(res, fillDTO(UploadImageResponse, updateDto));
-  }*/
+  }
 
 }

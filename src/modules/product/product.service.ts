@@ -8,6 +8,7 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import UpdateProductDto from './dto/update-product.dto.js';
 import {DEFAULT_PRODUCT_COUNT} from './product.constant.js';
 import {SortType} from '../../types/sort-type.enum.js';
+import { ProductQuery } from './query/product.query.js';
 
 
 @injectable()
@@ -38,10 +39,12 @@ export default class ProductService implements ProductServiceInterface {
     return this.productModel.findOne({title}).exec();
   }
 
-  public async find(): Promise<DocumentType<ProductEntity>[]> {
+  public async find(query: ProductQuery): Promise<DocumentType<ProductEntity>[]> {
+    const {limit, sortDate, sortPrice, page, guitarType, stringsCount}= query;
      return this.productModel
-    .find({}, {DEFAULT_PRODUCT_COUNT})
+    .find()
     .sort({postDate: SortType.Down})
+    .limit( limit )
     .exec();
   }
 

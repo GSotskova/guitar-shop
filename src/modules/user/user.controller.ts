@@ -91,7 +91,7 @@ export default class UserController extends Controller {
     const token = await createJWT(
       this.configService.get('JWT_ALGORITM'),
       this.configService.get('JWT_SECRET'),
-      { email: user.email, id: user.id}
+      { email: user.email, id: user.id, isAdmin: user.isAdmin}
     );
     this.ok(res, {
       ...fillDTO(LoggedUserResponse, user),
