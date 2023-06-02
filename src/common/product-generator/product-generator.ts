@@ -24,13 +24,11 @@ export default class ProductGenerator implements ProductGeneratorInterface {
     const stringsCount = getRandomItem<string>(this.mockData.stringsCount);
     const price = generateRandomValue(MIN_PRICE, MAX_PRICE).toString();
     const article = generateRandomString(MIN_STR_ARTICLE, MAX_STR_ARTICLE);
-    const name = getRandomItem<string>(this.mockData.users);
-    const email = getRandomItem<string>(this.mockData.emails);
 
     return [
       title, description, createdDate, photo,
       guitarType, stringsCount, price,
-      article, name, email
+      article
     ].join('\t');
   }
 }

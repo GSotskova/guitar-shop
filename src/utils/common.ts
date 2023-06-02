@@ -100,3 +100,6 @@ export const transformObject = (properties: string[], staticPath: string, upload
       }
     }));
 };
+
+export const getErrorMessage = (error: unknown): string =>
+  error instanceof Error ? error.message : '';
