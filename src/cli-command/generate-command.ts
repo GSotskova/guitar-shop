@@ -77,6 +77,7 @@ export default class GenerateCommand implements CliCommandInterface {
 
   private async onLine(line: string, resolve: () => void) {
     const product = createProduct(line);
+    console.log(product)
     await this.productService.create(product);
     resolve();
   }

@@ -6,9 +6,9 @@ import {ProductEntity} from './product.entity.js';
 import {Component} from '../../types/component.types.js';
 import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import UpdateProductDto from './dto/update-product.dto.js';
-import {DEFAULT_PRODUCT_COUNT} from './product.constant.js';
-import {SortType} from '../../types/sort-type.enum.js';
 import { ProductQuery } from './query/product.query.js';
+import { SomeObject } from '../../types/some-object.interface.js';
+import { DEFAULT_PRODUCT_COUNT } from './product.constant.js';
 
 
 @injectable()
@@ -41,10 +41,23 @@ export default class ProductService implements ProductServiceInterface {
 
   public async find(query: ProductQuery): Promise<DocumentType<ProductEntity>[]> {
     const {limit, sortDate, sortPrice, page, guitarType, stringsCount}= query;
+    const pageNum = page? page : 0;
+    const limitNum = limit? limit : DEFAULT_PRODUCT_COUNT;
+    const objSort: SomeObject = {};
+    const keys = Object.keys(query);
+    keys.forEach(key => {
+      key === 'sortDate'? objSort.addDate = sortDate : '';
+      key === 'sortPrice'? objSort.price = sortPrice : '';
+    });
+
+    const objFiltr: SomeObject = {};
+      if (query.guitarType) {objFiltr.guitarType = guitarType;}
+      if (query.stringsCount) {objFiltr.stringsCount = stringsCount;}
      return this.productModel
-    .find()
-    .sort({postDate: SortType.Down})
-    .limit( limit )
+    .find(objFiltr)
+    .sort(objSort)
+    .skip(pageNum * limitNum) 
+    .limit( limitNum )
     .exec();
   }
 

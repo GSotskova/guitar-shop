@@ -7,7 +7,7 @@ export class ProductQuery {
   @Transform(({ value } ) => +value || DEFAULT_PRODUCT_COUNT)
   @IsNumber()
   @IsOptional()
-  public limit = DEFAULT_PRODUCT_COUNT;
+  public limit?: number;
 
   @IsIn(['asc', 'desc'])
   @IsOptional()
@@ -19,7 +19,7 @@ export class ProductQuery {
 
   @Transform(({ value }) => +value)
   @IsOptional()
-  public page: number;
+  public page?: number;
 
   @IsEnum(GuitarType)
   @IsOptional()
