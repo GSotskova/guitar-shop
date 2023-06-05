@@ -1,4 +1,4 @@
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import LoginPage from '../../pages/login-page/login-page';
 import { AppRoute } from '../../constants';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
@@ -8,7 +8,6 @@ import ProductsPage from '../../pages/products-page/products-page';
 
 function App(): JSX.Element {
   return (
-    <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Login}
@@ -27,7 +26,6 @@ function App(): JSX.Element {
           element={<NotFoundScreen />}
         />
       </Routes>
-    </BrowserRouter>
   );
 }
 

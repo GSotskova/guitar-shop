@@ -20,6 +20,8 @@ import UserDto from '../dto/user/user.dto';
 import { ProductType } from '../types/products';
 import { UserAuth, UserRegister, UserType } from '../types/users';
 import {AppDispatch, State} from '../types/state.js';
+import { redirectToRoute } from './action';
+import {loadAuthInfo} from '../store/user-process/user-process';
 
 type Extra = {
   api: AxiosInstance;
@@ -46,7 +48,6 @@ export const fetchProducts = createAsyncThunk<ProductType[], undefined, {
   Action.FETCH_PRODUCTS,
   async (_arg, {dispatch, extra: api}) => {
     const { data } = await api.get<ProductDto[]>(AppRoute.Products);
-    console.log('fetchProducts', data, AppRoute.Products);
     return adaptProductsToClient(data);
   });
 
@@ -139,17 +140,18 @@ export const fetchUserStatus = createAsyncThunk<UserType, undefined, {
     }
   });
 
-export const loginUser = createAsyncThunk<UserAuth['email'], UserAuth, { extra: Extra }>(
+export const loginUser = createAsyncThunk<UserAuth['email'], UserAuth, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+ }>(
   Action.LOGIN_USER,
-  async ({ email, password }, { extra }) => {
-    const { api, history } = extra;
-    const { data } = await api.post<UserType & { token: string }>(APIRoute.Login, { email, password });
-
-    const { token } = data;
-
+  async ({ email, password }, {dispatch, extra: api}) => {
+    const { data: {token} } = await api.post<UserType & { token: string }>(APIRoute.Login, { email, password });
     saveToken(token);
-    history.push(AppRoute.Products);
-
+    const {data} = await api.get<UserType>(APIRoute.Login);
+    dispatch(loadAuthInfo({authInfo: data}));
+    dispatch(redirectToRoute(AppRoute.Products));
     return email;
   });
 
@@ -162,15 +164,19 @@ export const logoutUser = createAsyncThunk<void, undefined, { extra: Extra }>(
     dropToken();
   });
 
-export const registerUser = createAsyncThunk<void, UserRegister, { extra: Extra }>(
+export const registerUser = createAsyncThunk<void, UserRegister, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+ }>(
   Action.REGISTER_USER,
-  async ({ email, password, name }, { extra }) => {
-    const { api, history } = extra;
+  async ({ email, password, name }, { dispatch, extra: api }) => {
     const { data } = await api.post<{ id: string }>(APIRoute.Register, adaptUserToServer({
       email,
       password,
       name
     }));
-    history.push(AppRoute.Login);
+    dispatch(redirectToRoute(AppRoute.Login));
   });
+
 

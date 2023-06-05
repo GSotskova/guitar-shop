@@ -1,8 +1,22 @@
+import { FormEvent } from 'react';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import MetaInfo from '../../components/meta/meta';
+import { UserRegister } from '../../types/users';
+import { useAppDispatch } from '../../hooks';
+import { registerUser } from '../../store/api-actions';
 
 function RegistrationPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    const formData = new FormData(form) as Iterable<[UserRegister]>;
+    const data = Object.fromEntries(formData);
+
+    dispatch(registerUser(data));
+  };
 
   return (
     <div>
@@ -13,7 +27,7 @@ function RegistrationPage(): JSX.Element {
           <div className="container">
             <section className="login">
               <h1 className="login__title">Регистрация</h1>
-              <form method="post" action="/">
+              <form method="post" action="#" onSubmit={handleFormSubmit}>
                 <div className="input-login">
                   <label htmlFor="name">Введите имя</label>
                   <input type="text" id="name" name="name" autoComplete="off" required/>

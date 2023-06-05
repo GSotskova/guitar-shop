@@ -10,6 +10,4 @@ export default class UserResponse {
   @Expose()
   public email!: string;
 
-  @Expose()
-  public userType!: string;
 }

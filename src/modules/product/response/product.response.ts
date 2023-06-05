@@ -4,6 +4,9 @@ import { GuitarType } from '../../../types/guitar-type.enum.js';
 
 export default class ProductResponse {
   @Expose()
+  public id!: string ;
+
+  @Expose()
   public title!: string ;
 
   @Expose()

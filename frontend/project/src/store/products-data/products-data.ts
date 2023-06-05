@@ -21,7 +21,6 @@ export const productsData = createSlice({
         state.hasError = false;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        console.log('ff', state, action.payload)
         state.products = action.payload;
         state.isProductsDataLoading = false;
       })

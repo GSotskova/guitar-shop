@@ -1,4 +1,4 @@
-import {IsBoolean, IsEmail, IsString, Length} from 'class-validator';
+import {IsBoolean, IsEmail, IsOptional, IsString, Length} from 'class-validator';
 
 export default class CreateUserDto {
 
@@ -12,7 +12,8 @@ export default class CreateUserDto {
   @IsString({message: 'Пароль обязательное поле'})
   @Length(6, 12, {message: 'Минимальная длина 6 символов, максимальная длина 12 символов'})
   public password!: string;
-
+  
+  @IsOptional()
   @IsBoolean()
   public isAdmin?: boolean;
 }
