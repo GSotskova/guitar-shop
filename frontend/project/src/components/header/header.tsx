@@ -1,4 +1,13 @@
+import { useAppSelector } from '../../hooks';
+import { getProducts, getProductsDataLoadingStatus } from '../../store/products-data/selectors';
+
+
+
 const Header = () => {
+  const isProductsLoading = useAppSelector(getProductsDataLoadingStatus);
+  const products = useAppSelector(getProducts);
+console.log('isProductsLoading', isProductsLoading);
+console.log('products', products);
   return (
     <div>
       <header className="header" id="header">

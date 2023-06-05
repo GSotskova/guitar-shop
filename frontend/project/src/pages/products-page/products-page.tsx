@@ -3,6 +3,8 @@ import Header from '../../components/header/header';
 import MetaInfo from '../../components/meta/meta';
 
 function ProductsPage(): JSX.Element {
+
+
   return (
     <div>
       <MetaInfo/>
@@ -193,3 +195,5 @@ function ProductsPage(): JSX.Element {
 }
 
 export default ProductsPage;
+
+
