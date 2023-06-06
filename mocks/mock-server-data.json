@@ -1,0 +1,42 @@
+{
+    "api": {
+      "titles": [
+        "Гитара_1",
+        "Гитара_2",
+        "Гитара_3",
+        "Гитара_4",
+        "Гитара_5"
+      ],
+      "descriptions": [
+        "Отличная гитара",
+        "Великолепная гитара",
+        "Хорошая гитара",
+        "Гитара как гитара",
+        "Ну очень классная гитара"
+      ],
+      "photo": [
+        "catalog-product-0.png",
+        "catalog-product-1.png",
+        "catalog-product-2.png",
+        "catalog-product-3.png",
+        "catalog-product-4.png",
+        "catalog-product-5.png",
+        "catalog-product-6.png",
+        "catalog-product-7.png"
+      ],
+      "users": ["admin"],
+      "emails": ["admin@mail.com"],
+      "guitarTypes": [
+        "электро",
+        "акустика",
+        "укулеле"
+      ],
+    "stringsCount": [
+        4, 
+        6, 
+        7, 
+        12
+    ]
+    }
+  }
+  
