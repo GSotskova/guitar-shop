@@ -13,6 +13,9 @@ export type ProductData = {
   products: ProductType[];
   isProductsDataLoading: boolean;
   hasError: boolean;
+  isProductLoading: boolean;
+  product: ProductType | null;
+  hasErrorPost: boolean;
 };
 
 

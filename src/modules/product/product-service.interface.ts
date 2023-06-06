@@ -12,6 +12,8 @@ export interface ProductServiceInterface extends DocumentExistsInterface {
   find(query: ProductQuery): Promise<DocumentType<ProductEntity>[]>;
   updateById(productId: string, dto: UpdateProductDto): Promise<DocumentType<ProductEntity> | null>;
   deleteById(productId: string): Promise<DocumentType<ProductEntity> | null>;
+  findNew(): Promise<DocumentType<ProductEntity>[]>;
+  findAll(): Promise<DocumentType<ProductEntity>[]>;
 
   exists(documentId: string): Promise<boolean>;
 }

@@ -1,7 +1,6 @@
 import {useRef, FormEvent} from 'react';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
-import MetaInfo from '../../components/meta/meta';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginUser } from '../../store/api-actions';
 import { getHasErrorLogin } from '../../store/user-process/selectors';
@@ -31,8 +30,6 @@ function LoginPage(): JSX.Element {
 
   return (
     <div>
-      <MetaInfo/>
-      <Header/>
       <div className="wrapper">
         <main className="page-content">
           <div className="container">

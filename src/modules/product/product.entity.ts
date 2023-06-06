@@ -20,7 +20,7 @@ export class ProductEntity extends defaultClasses.TimeStamps {
   @prop()
   public addDate!: Date;
 
-  @prop({default: ''})
+  @prop({trim: true})
   public photo!: string;
 
   @prop({

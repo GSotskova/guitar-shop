@@ -1,20 +1,33 @@
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import { ProductType } from '../../types/products';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getIsProductLoading, getProduct } from '../../store/products-data/selectors';
+import { useEffect } from 'react';
+import { fetchProduct } from '../../store/api-actions';
 
-const Card = (product: ProductType) => {
+const Card = () => {
+
+  const params = useParams();
+  const dispatch = useAppDispatch();
+  const isProductLoading = useAppSelector(getIsProductLoading);
+  const product = useAppSelector(getProduct);
+
+  useEffect(() => {
+    const { id } = params;
+    if (id) {
+      dispatch(fetchProduct(id));
+    }
+  }, [params, dispatch]);
+
+
+  if (!product) {
+    return null;
+  }
+
   return (
-    <main className="page-content">
-      <h1 className="page-content__title title title--bigger">Товар</h1>
-      <ul className="breadcrumbs page-content__breadcrumbs">
-        <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
-        </li>
-        <li className="breadcrumbs__item"><a className="link" href="./main.html">Каталог</a>
-        </li>
-        <li className="breadcrumbs__item"><a className="link">Товар</a>
-        </li>
-      </ul>
+
       <div className="product-container">
-        <img className="product-container__img" src="img/content/catalog-product-1.png" srcSet="img/content/catalog-product-1@2x.png 2x" width="90" height="235" alt=""/>
+        <img className="product-container__img" src={product.photo}  width="90" height="235" alt=""/>
         <div className="product-container__info-wrapper">
           <h2 className="product-container__title title title--big title--uppercase">{product.title}</h2>
           <br/>
@@ -40,7 +53,6 @@ const Card = (product: ProductType) => {
           </div>
         </div>
     </div>
-  </main>
   );
 };
 

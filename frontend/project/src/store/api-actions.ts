@@ -17,7 +17,7 @@ import {
 
 import ProductDto from '../dto/product/product.dto';
 import UserDto from '../dto/user/user.dto';
-import { ProductType } from '../types/products';
+import { ProductNew, ProductType } from '../types/products';
 import { UserAuth, UserRegister, UserType } from '../types/users';
 import {AppDispatch, State} from '../types/state.js';
 import { redirectToRoute } from './action';
@@ -31,6 +31,9 @@ type Extra = {
 export const Action = {
   FETCH_PRODUCTS: 'products',
   FETCH_PRODUCT: 'product/fetch',
+  POST_OFFER: 'offer/post-offer',
+  EDIT_OFFER: 'offer/edit-offer',
+  DELETE_OFFER: 'offer/delete-offer',
   POST_PRODUCT: 'product/post-product',
   EDIT_PRODUCT: 'product/edit-product',
   DELETE_PRODUCT: 'product/delete-product',
@@ -69,28 +72,36 @@ export const fetchProduct = createAsyncThunk<ProductType, ProductType['id'], {
     }
   });
 
-export const postProduct = createAsyncThunk<ProductType, ProductType, { extra: Extra }>(
-  Action.POST_PRODUCT,
-  async (newProduct, { extra }) => {
-    const { api, history } = extra;
-    const { data } = await api.post<ProductDto>(`${APIRoute.Products}/create`, adaptCreateProductToServer(newProduct));
-    history.push(`${AppRoute.Products}/${data.id}`);
+  export const postProduct = createAsyncThunk<ProductType, ProductNew, {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+   }>(
+    Action.POST_OFFER,
+    async (newProduct, { dispatch, extra: api }) => {
+      console.log('postProduct', newProduct, adaptCreateProductToServer(newProduct))
+      const { data } = await api.post<ProductDto>(`${APIRoute.Products}/create`, adaptCreateProductToServer(newProduct));
+      dispatch(redirectToRoute(`${AppRoute.Products}/${data.id}`));
 
-    if (data) {
+      if (data) {
 
-      const postImageAPIRoute = `${APIRoute.Products}/${data.id}/photo`;
-      await api.post(postImageAPIRoute, adaptPhotoToServer(newProduct.photo), {
-        headers: { 'Content-Type': 'multipart/form-data boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' },
-      });
-    }
+        const postImageApiRoute = `${APIRoute.Products}/${data.id}/photo`;
+        await api.post(postImageApiRoute, adaptPhotoToServer(newProduct.photo), {
+          headers: { 'Content-Type': 'multipart/form-data boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' },
+        });
 
-    return adaptProductToClient(data);
-  });
+      }
 
-export const editProduct = createAsyncThunk<ProductType, ProductType, { extra: Extra }>(
+      return adaptProductToClient(data);
+    });
+
+export const editProduct = createAsyncThunk<ProductType, ProductType, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+ }>(
   Action.EDIT_PRODUCT,
-  async (product, { extra }) => {
-    const { api, history } = extra;
+  async (product, { dispatch, extra: api }) => {
 
     const postImageAPIRoute = `${APIRoute.Products}/${product.id}/photo`;
     await api.post(postImageAPIRoute, adaptPhotoToServer(product.photo), {
@@ -98,24 +109,27 @@ export const editProduct = createAsyncThunk<ProductType, ProductType, { extra: E
     });
 
 
-    const { data } = await api.patch<ProductDto>(`${APIRoute.Products}/${product.id}`, adaptEditProductToServer(product));
-    history.push(`${AppRoute.Products}/${data.id}`);
+    const { data } = await api.patch<ProductDto>(`${APIRoute.Products}/${product.id}${APIRoute.Edit}`, adaptEditProductToServer(product));
 
+    dispatch(redirectToRoute(`${AppRoute.Products}/${data.id}`));
     return adaptProductToClient(data);
   });
 
-export const deleteProduct = createAsyncThunk<ProductType[], string, { extra: Extra }>(
+export const deleteProduct = createAsyncThunk<ProductType[], string, { dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+ }>(
   Action.DELETE_PRODUCT,
-  async (id, { extra }) => {
-    const { api, history } = extra;
-    await api.delete(`${APIRoute.Products}/${id}`);
+  async (id, { dispatch, extra: api  }) => {
+    await api.delete(`${APIRoute.Products}/${id}${APIRoute.Delete}`);
 
 
-    const { data } = await api.delete(`${APIRoute.Products}/${id}`);
+    const { data } = await api.get<ProductDto[]>(AppRoute.Products);
     adaptProductsToClient(data);
-    history.push(AppRoute.NotFound);
-    return data;
+    dispatch(redirectToRoute(`${AppRoute.Products}`));
+    return data
   });
+
 
 
 export const fetchUserStatus = createAsyncThunk<UserType, undefined, {
@@ -127,7 +141,6 @@ export const fetchUserStatus = createAsyncThunk<UserType, undefined, {
 
     try {
       const { data } = await api.get<UserDto>(APIRoute.Login);
-
       return adaptUserToClient(data);
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -140,7 +153,7 @@ export const fetchUserStatus = createAsyncThunk<UserType, undefined, {
     }
   });
 
-export const loginUser = createAsyncThunk<UserAuth['email'], UserAuth, {
+export const loginUser = createAsyncThunk<UserType, UserAuth, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -152,7 +165,7 @@ export const loginUser = createAsyncThunk<UserAuth['email'], UserAuth, {
     const {data} = await api.get<UserType>(APIRoute.Login);
     dispatch(loadAuthInfo({authInfo: data}));
     dispatch(redirectToRoute(AppRoute.Products));
-    return email;
+    return data;
   });
 
 export const logoutUser = createAsyncThunk<void, undefined, { extra: Extra }>(

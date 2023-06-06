@@ -1,8 +1,10 @@
+import CreateProductDto from "../../dto/product/create-product.dto";
 import ProductDto from "../../dto/product/product.dto";
 import UpdateProductDto from "../../dto/product/update-product.dto";
 import UserDto from "../../dto/user/user.dto";
-import { ProductType } from "../../types/products";
+import { ProductNew, ProductType } from "../../types/products";
 import { UserRegister } from "../../types/users";
+import { transformDate } from "../utils";
 
 
 export const adaptUserToServer =
@@ -26,11 +28,10 @@ export const adaptEditProductToServer =
   });
 
 export const adaptCreateProductToServer =
-  (product: ProductType): ProductDto => ({
-    id: product.id.toString(),
+  (product: ProductNew): CreateProductDto => ({
     title: product.title,
     description: product.description,
-    addDate: product.addDate,
+    addDate: new Date(transformDate(product.addDate.toString())),
     photo: product.photo,
     guitarType: product.guitarType,
     article: product.article,

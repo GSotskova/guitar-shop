@@ -33,16 +33,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQG1haWwucnUiLCJpZ
 ## Создание нового товара (5.1)
 POST http://localhost:4000/products/create HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQG1haWwucnUiLCJpZCI6IjY0Nzk4ZDE0MDU3MTY1NTcyMzM4ZmNiYSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY4NTcyMjc1NywiZXhwIjoxNjg1ODk1NTU3fQ.h25MIlaOCAFksMxme1644SF8bGRgHeWyqHJDy_LP5Fo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQG1haWwucnUiLCJpZCI6IjY0Nzk4ZDE0MDU3MTY1NTcyMzM4ZmNiYSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY4NjAyMjM3MCwiZXhwIjoxNjg2MTk1MTcwfQ.tVZ57OdwIEELmlIgIAQW3N7ielJtEigsNb-hsHRx8s0
+ 
 
 {
-  "title": "Гитара 222",
+  "title": "Гитара 99999",
   "description": "Отличнейшая электро гитара",
   "addDate": "2023-01-25T08:20:40.283Z",
   "guitarType": "электро",
   "article": "3VRS14858383D",
   "stringsCount": 7,
-  "price": 900
+  "price": 3900
 }
 ###
 
@@ -64,21 +65,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQG1haWwucnUiLCJpZ
 ###
 
 ## Получение списка товаров (5.4)
-GET http://localhost:4000/products?guitarType=электро&sortPrice=asc&limit=7&page=0 HTTP/1.1
+GET http://localhost:4000/products/filter?guitarType=электро&sortPrice=asc&limit=7&page=0 HTTP/1.1
 Content-Type: application/json
 
 ###
 
-## Получение списка товаров (5.4)
+## Получение полного списка товаров (5.4)
 GET http://localhost:4000/products HTTP/1.1
 Content-Type: application/json
 
 ###
 
 ## Получение детальной информации по товару (5.5)
-GET http://localhost:4000/products/64798d4b20c1a276e3822242 HTTP/1.1
+GET http://localhost:4000/products/647af3a8d40f1e2d592533cf HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczEwQG92ZXJsb29rLm5ldCIsImlkIjoiNjQ3OWQxM2M5NzU0ZmFmYTQ2YzkxNTJhIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY4NTcxODkzNywiZXhwIjoxNjg1ODkxNzM3fQ.myXPS_uN-brUZ5RamjRWfuZjBgRi1L_ZmH29wv19iIw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQG1haWwucnUiLCJpZCI6IjY0Nzk4ZDE0MDU3MTY1NTcyMzM4ZmNiYSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY4NTk4NjY4MSwiZXhwIjoxNjg2MTU5NDgxfQ.WzG92e9KAaHp7yIKcFSEX4-AE_tDBwUTDa3_t-UIAYI
 
 ###
 

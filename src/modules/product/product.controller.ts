@@ -38,7 +38,7 @@ export default class ProductController extends Controller {
     super(logger, configService);
     this.logger.info('Register routes for ProductController...');
 
-    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/filter', method: HttpMethod.Get, handler: this.index});
     this.addRoute({
       path: '/create',
       method: HttpMethod.Post,
@@ -48,6 +48,8 @@ export default class ProductController extends Controller {
         new ValidateDtoMiddleware(CreateProductDto)
       ]
     });
+    this.addRoute({path: '/add', method: HttpMethod.Get, handler: this.getNew});
+    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.getAll});
     this.addRoute({
       path: '/:productId',
       method: HttpMethod.Get,
@@ -105,6 +107,7 @@ export default class ProductController extends Controller {
     req: Request<Record<string, unknown>, Record<string, unknown>, CreateProductDto>,
     res: Response
   ): Promise<void> {
+    console.log('b create')
     const {body} = req;
     const result = await this.productService.create({...body});
     const product = await this.productService.findById(result.id);
@@ -145,4 +148,12 @@ public async uploadPhoto(req: Request<core.ParamsDictionary | ParamsGetProduct>,
     this.created(res, fillDTO(UploadImageResponse, updateDto));
   }
 
+  public async getNew(_req: Request, res: Response) {
+    const newProduct = await this.productService.findNew();
+    this.ok(res, fillDTO(ProductResponse, newProduct));
+  }
+  public async getAll(_req: Request, res: Response) {
+    const allProducts = await this.productService.findAll();
+    this.ok(res, fillDTO(ProductResponse, allProducts));
+  }
 }

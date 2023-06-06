@@ -3,6 +3,9 @@ export enum AppRoute {
   Registration = '/registration',
   Products = '/products',
   NotFound = '/404',
+  Add = '/add',
+  Edit = '/edit'
+
 }
 
 export enum AuthorizationStatus {
@@ -16,11 +19,14 @@ export enum APIRoute {
   Products = '/products',
   Login = '/users/login',
   Logout = '/users/logout',
-  Register = '/users/create'
+  Register = '/users/create',
+  Edit = '/edit',
+  Delete = '/delete'
 }
 
 export enum NameSpace {
   DataProducts = 'DATA_PRODUCTS',
+  DataProduct = 'DATA_PRODUCT',
   Sort = 'SORT',
   User = 'USER'
 }
@@ -33,3 +39,5 @@ export enum HttpCode {
   NOT_FOUND = 404,
   CONFLICT = 409,
 }
+
+

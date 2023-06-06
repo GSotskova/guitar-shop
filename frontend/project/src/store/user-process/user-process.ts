@@ -7,7 +7,7 @@ import { UserType } from '../../types/users';
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
   authInfo: null,
-  hasErrorLogin: false,
+  hasErrorLogin: false
 };
 
 export const userProcess = createSlice({

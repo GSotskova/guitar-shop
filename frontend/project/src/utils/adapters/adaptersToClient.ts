@@ -15,7 +15,8 @@ export const adaptLoginToClient =
 export const adaptUserToClient =
   (user: UserDto): UserType => ({
     name: user.name,
-    email: user.email
+    email: user.email,
+    isAdmin: user.isAdmin || false
   });
 
 export const adaptProductsToClient =

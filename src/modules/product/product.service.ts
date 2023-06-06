@@ -8,7 +8,8 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import UpdateProductDto from './dto/update-product.dto.js';
 import { ProductQuery } from './query/product.query.js';
 import { SomeObject } from '../../types/some-object.interface.js';
-import { DEFAULT_PRODUCT_COUNT } from './product.constant.js';
+import { DEFAULT_PRODUCT_IMAGES, DEFAULT_PRODUCT_COUNT } from './product.constant.js';
+import { getRandomItem } from '../../utils/random.js';
 
 
 @injectable()
@@ -20,8 +21,8 @@ export default class ProductService implements ProductServiceInterface {
   ) {}
 
   public async create(dto: CreateProductDto): Promise<DocumentType<ProductEntity>> {
-    
-    const result = await this.productModel.create(dto);
+    const randomProductPhoto = getRandomItem(DEFAULT_PRODUCT_IMAGES);
+    const result = await this.productModel.create({...dto, photo: randomProductPhoto});
 
     this.logger.info(`New product created: ${dto.title}`);
 
@@ -60,6 +61,19 @@ export default class ProductService implements ProductServiceInterface {
     .limit( limitNum )
     .exec();
   }
+
+  public async findNew(): Promise<DocumentType<ProductEntity>[]> {
+    return this.productModel
+      .find()
+      .exec();
+  }
+
+  public async findAll(): Promise<DocumentType<ProductEntity>[]> {
+    return this.productModel
+      .find()
+      .exec();
+  }
+
 
 
   public async updateById(productId: string, dto: UpdateProductDto): Promise<DocumentType<ProductEntity> | null> {

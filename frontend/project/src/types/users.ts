@@ -2,7 +2,9 @@ export type UserType = {
     name: string;
     email: string;
     token?: string
+    isAdmin?: boolean;
   }
+
 
   export type UserAuth = Pick<UserType, 'email'> & { password: string };
 

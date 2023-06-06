@@ -9,9 +9,17 @@ npm start
     ### запуск JSON-сервера
     npm run mock:server
 
+    ### Backend
+    npm run start
+    npm run start: dev
+
+    ### Frontend
+    cd frontend/project
+    npm start
+
 ## Переменные окружения
 
-PORT=4000 - порт, на котором запускается сервер
+PORT=4000 - порт Backend
 SALT=text
 DB_HOST=127.0.0.1
 DB_USER=admin - имя пользователя
@@ -21,4 +29,8 @@ UPLOAD_DIRECTORY=upload
 JWT_SECRET=khgjkhgrfjhgf
 JWT_ALGORITM = HS256
 
+PORT=3000  - порт Frontend
+DISABLE_ESLINT_PLUGIN=true
+
 ##  Количество часов, затраченных на проект
+~ 38 часов

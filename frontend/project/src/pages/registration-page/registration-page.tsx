@@ -1,7 +1,6 @@
 import { FormEvent } from 'react';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
-import MetaInfo from '../../components/meta/meta';
 import { UserRegister } from '../../types/users';
 import { useAppDispatch } from '../../hooks';
 import { registerUser } from '../../store/api-actions';
@@ -20,7 +19,6 @@ function RegistrationPage(): JSX.Element {
 
   return (
     <div>
-      <MetaInfo/>
       <Header/>
       <div className="wrapper">
         <main className="page-content">
@@ -30,7 +28,15 @@ function RegistrationPage(): JSX.Element {
               <form method="post" action="#" onSubmit={handleFormSubmit}>
                 <div className="input-login">
                   <label htmlFor="name">Введите имя</label>
-                  <input type="text" id="name" name="name" autoComplete="off" required/>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    autoComplete="off"
+                    required
+                    minLength={1}
+                    maxLength={15}
+                  />
                   <p className="input-login__error">Заполните поле</p>
                 </div>
                 <div className="input-login">
@@ -40,7 +46,15 @@ function RegistrationPage(): JSX.Element {
                 </div>
                 <div className="input-login">
                   <label htmlFor="password">Придумайте пароль</label><span>
-                    <input type="password" placeholder="• • • • • • • • • • • •" id="password" name="password" autoComplete="off" required/>
+                    <input
+                      type="password" placeholder="• • • • • • • • • • • •"
+                      id="password"
+                      name="password"
+                      autoComplete="off"
+                      required
+                      minLength={6}
+                      maxLength={12}
+                    />
                     <button className="input-login__button-eye" type="button">
                       <svg width="14" height="8" aria-hidden="true">
                         <use xlinkHref="#icon-eye"></use>

@@ -5,4 +5,6 @@ export default class UserDto {
   public email!: string;
 
   public password!: string;
+
+  public isAdmin?: boolean
 }

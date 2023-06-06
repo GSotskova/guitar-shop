@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { AppRoute } from "../../constants";
 import { useAppSelector } from "../../hooks";
 import { getAuthInfo } from "../../store/user-process/selectors";
@@ -13,7 +13,8 @@ const Header = () => {
             <img className="logo__img" width="70" height="70" src="./img/svg/logo.svg" alt="Логотип"/></a>
             <nav className="main-nav">
               <ul className="main-nav__list">
-                <li className="main-nav__item"><a className="link main-nav__link" href="#">Каталог</a>
+                <li className="main-nav__item">
+                  <Link className="link main-nav__link" to={`${AppRoute.Products}`}>Каталог</Link>
                 </li>
                 <li className="main-nav__item"><a className="link main-nav__link" href="#">Где купить?</a>
                 </li>
@@ -33,6 +34,7 @@ const Header = () => {
           </div>
         </div>
       </header>
+      <Outlet />
     </div>
   );
 };
