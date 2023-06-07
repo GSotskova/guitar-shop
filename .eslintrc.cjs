@@ -11,24 +11,19 @@ module.exports = {
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": ["./tsconfig.json"]
     },
     "plugins": [
         "@typescript-eslint",
         "react"
     ],
     "rules": {
+      '@typescript-eslint/no-empty-interface': 'off'
     },
     "overrides": [
         {
-          "files": ['*.ts', '*.tsx'], 
-          "extends": [
-            'plugin:@typescript-eslint/recommended',
-            'plugin:@typescript-eslint/recommended-requiring-type-checking',
-          ]
+          "files": ['*.ts', '*.tsx']
         },
-        "parserOptions": {
-          "project": ["./tsconfig.json"]
-        }
     ]
 }
