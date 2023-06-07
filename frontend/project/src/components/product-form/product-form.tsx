@@ -181,7 +181,7 @@ const ProductForm = <T extends ProductType | ProductNew>({
             type="text"
             name={FormFieldName.addDate}
             placeholder="Дата в формате 00.00.0000"
-            defaultValue={product.addDate.toString()}
+            defaultValue={new Date(product.addDate).toLocaleDateString('ru-RU')}
            />
         </label>
         <p>Заполните поле</p>
