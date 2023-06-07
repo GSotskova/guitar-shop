@@ -19,7 +19,7 @@ export const adaptEditProductToServer =
     id: product.id.toString(),
     title: product.title,
     description: product.description,
-    addDate: product.addDate,
+    addDate: new Date(transformDate(product.addDate.toString())),
     photo: product.photo,
     guitarType: product.guitarType,
     article: product.article,
